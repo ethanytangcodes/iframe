@@ -55,12 +55,14 @@
 
     <div class="code-box" id="codeBox"></div>
 
+    <iframe id="previewFrame" title="preview"></iframe>
+
     <div class="actions">
       <button id="downloadBtn" disabled>Download HTML</button>
     </div>
 
     <footer>
-      Made by <span>Ethan</span>
+      Made with ❤️ by <span>Ethan</span>
     </footer>
   </div>
 
@@ -80,7 +82,7 @@
     }
 
     function buildHtml(url){
-      return `<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n  <title>Embedded: ${url}</title>\n  <style>body{margin:0;font-family:Inter,system-ui;background:#0d111a;color:#eef2ff;display:flex;flex-direction:column;min-height:100vh;}iframe{flex:1;width:100%;border:none;}footer{height:50px;display:flex;align-items:center;justify-content:center;background:#090d14;color:#a0acc8;font-size:14px}footer span{color:#6d63ff;font-weight:600}</style>\n</head>\n<body>\n  <iframe src=\"${url}\" title=\"${url}\"></iframe>\n  <footer>Made by <span>Ethan</span></footer>\n</body>\n</html>`;
+      return `<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n  <title>Embedded: ${url}</title>\n  <style>body{margin:0;font-family:Inter,system-ui;background:#0d111a;color:#eef2ff;display:flex;flex-direction:column;min-height:100vh;}iframe{flex:1;width:100%;border:none;}footer{height:50px;display:flex;align-items:center;justify-content:center;background:#090d14;color:#a0acc8;font-size:14px}footer span{color:#6d63ff;font-weight:600}</style>\n</head>\n<body>\n  <iframe src=\"${url}\" title=\"${url}\"></iframe>\n  <footer>Made with ❤️ by <span>Ethan</span></footer>\n</body>\n</html>`;
     }
 
     function animateCode(text){
