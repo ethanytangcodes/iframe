@@ -1,126 +1,246 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SiteGen — Instant iframe page generator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>downloads</title>
   <style>
-    :root{--bg:#070b12;--panel:#0d111a;--accent:#6d63ff;--text:#eef2ff;--muted:#a0acc8;--glass:rgba(255,255,255,0.05);}
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{background:radial-gradient(circle at 30% 10%,#101522,#05080f);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;min-height:100vh;display:flex;align-items:center;justify-content:center;}
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
 
-    .app{width:95%;max-width:1100px;display:flex;flex-direction:column;gap:24px;background:var(--panel);border-radius:20px;padding:32px;box-shadow:0 0 40px rgba(0,0,0,0.4);backdrop-filter:blur(10px)}
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
 
-    header{text-align:center;margin-bottom:10px}
-    header h1{font-size:28px;font-weight:800;color:var(--text);letter-spacing:-0.02em}
-    header p{font-size:14px;color:var(--muted);margin-top:6px}
+    body {
+      margin: 0;
+      padding: 2rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      background: radial-gradient(circle at top left, #4f46e5, #9333ea, #111);
+      color: #fff;
+      overflow-x: hidden;
+    }
 
-    .input-area{display:flex;gap:12px;justify-content:center;align-items:center;margin-top:10px}
-    input[type=text]{flex:1;max-width:500px;padding:14px 16px;border-radius:14px;border:none;outline:none;background:var(--glass);color:var(--text);font-size:14px;transition:0.2s}
-    input[type=text]:focus{background:rgba(255,255,255,0.08);}
-    button{background:linear-gradient(90deg,var(--accent),#58caff);border:none;border-radius:14px;padding:12px 18px;color:#fff;font-weight:700;cursor:pointer;transition:0.25s;font-size:14px;box-shadow:0 6px 18px rgba(109,99,255,0.3)}
-    button:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(109,99,255,0.4)}
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(90deg, #a78bfa, #c084fc, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+      letter-spacing: 1px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
 
-    .code-box{background:#0a0e16;border-radius:16px;padding:16px;font-family:ui-monospace,monospace;font-size:13px;color:#e6ebff;overflow:auto;max-height:260px;box-shadow:inset 0 0 10px rgba(0,0,0,0.3)}
-    .code-line{white-space:pre-wrap;opacity:0;transition:opacity 0.1s;margin-bottom:4px}
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #c084fc, 0 0 20px #a78bfa;
+      }
+      to {
+        text-shadow: 0 0 20px #f472b6, 0 0 40px #c084fc;
+      }
+    }
 
-    iframe{width:100%;height:400px;border-radius:16px;border:none;margin-top:16px;box-shadow:0 8px 24px rgba(0,0,0,0.4)}
+    .search-container {
+      position: relative;
+      margin: 1.5rem 0 2rem 0;
+      width: 100%;
+      max-width: 600px;
+    }
 
-    footer{text-align:center;margin-top:20px;font-size:13px;color:var(--muted)}
-    footer span{color:var(--accent);font-weight:600}
+    input[type="text"] {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      border-radius: 1rem;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    }
 
-    .actions{display:flex;gap:10px;justify-content:center;margin-top:14px}
-    .actions button{padding:10px 14px;font-size:13px;background:var(--glass);color:var(--text);box-shadow:none}
-    .actions button:hover{background:rgba(255,255,255,0.1)}
+    input[type="text"]:focus {
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+      transform: scale(1.02);
+    }
 
-    .back-btn{position:fixed;bottom:30px;right:30px;background:linear-gradient(135deg,#6d63ff,#58caff);color:#fff;font-weight:700;border:none;border-radius:50%;width:60px;height:60px;box-shadow:0 8px 25px rgba(109,99,255,0.4);cursor:pointer;transition:all .25s ease;}
-    .back-btn:hover{transform:scale(1.1) rotate(-5deg);box-shadow:0 10px 35px rgba(88,202,255,0.6)}
+    input[type="text"]::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
 
-    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    .fadeInUp{animation:fadeInUp 0.6s ease forwards}
+    .file-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .file-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 1.2rem;
+      padding: 1.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .file-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.15),
+        transparent
+      );
+      transition: 0.5s;
+    }
+
+    .file-card:hover::before {
+      left: 100%;
+    }
+
+    .file-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .file-name {
+      font-weight: 600;
+      font-size: 1.05rem;
+      text-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    }
+
+    button {
+      background: linear-gradient(135deg, #a78bfa, #c084fc, #f472b6);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    }
+
+    button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 20px rgba(240, 171, 252, 0.4);
+    }
+
+    .no-results {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      opacity: 0.8;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.6;
+    }
+
+    footer:hover {
+      opacity: 1;
+      transition: 0.3s;
+    }
   </style>
 </head>
 <body>
-  <div class="app fadeInUp">
-    <header>
-      <h1>SiteGen</h1>
-      <p>Generate a downloadable HTML page that embeds any site in a clean iframe — built by <span style="color:var(--accent);font-weight:700;">Ethan</span>.</p>
-    </header>
 
-    <div class="input-area">
-      <input id="urlInput" type="text" placeholder="Enter a website URL (example.com)" />
-      <button id="generateBtn">Generate</button>
-    </div>
-
-    <div class="code-box" id="codeBox"></div>
-
-    <iframe id="previewFrame" title="preview"></iframe>
-
-    <div class="actions">
-      <button id="downloadBtn" disabled>Download HTML</button>
-    </div>
-
-    <footer>
-      Made with ❤️ by <span>Ethan</span>
-    </footer>
+  <div class="search-container">
+    <input type="text" id="search" placeholder="search files" />
   </div>
 
-  <button class="back-btn" id="backHome">🏠</button>
+  <div class="file-list" id="fileList">
+    <div class="file-card">
+      <div class="file-name">gn-m4th</div>
+      <button data-link="https://raw.githubusercontent.com/ethanytangcodes/download/refs/heads/main/files/gnmath.html">Download</button>
+    </div>
+  </div>
+
+  <p id="noResults" class="no-results" style="display:none;">No matching files found</p>
+
+  <footer>Built by Ethan Tang</footer>
 
   <script>
-    const urlInput = document.getElementById('urlInput');
-    const generateBtn = document.getElementById('generateBtn');
-    const codeBox = document.getElementById('codeBox');
-    const previewFrame = document.getElementById('previewFrame');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const backHome = document.getElementById('backHome');
+    // Force download behavior
+    document.querySelectorAll("button").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const fileUrl = btn.dataset.link;
+        const fileName = fileUrl.split("/").pop();
 
-    function normalizeUrl(url){
-      if(!url.match(/^https?:\/\//)) url = 'https://' + url;
-      return url;
-    }
-
-    function buildHtml(url){
-      return `<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n  <title>Embedded: ${url}</title>\n  <style>body{margin:0;font-family:Inter,system-ui;background:#0d111a;color:#eef2ff;display:flex;flex-direction:column;min-height:100vh;}iframe{flex:1;width:100%;border:none;}footer{height:50px;display:flex;align-items:center;justify-content:center;background:#090d14;color:#a0acc8;font-size:14px}footer span{color:#6d63ff;font-weight:600}</style>\n</head>\n<body>\n  <iframe src=\"${url}\" title=\"${url}\"></iframe>\n  <footer>Made with ❤️ by <span>Ethan</span></footer>\n</body>\n</html>`;
-    }
-
-    function animateCode(text){
-      codeBox.innerHTML='';
-      downloadBtn.disabled = true;
-      const lines = text.split('\n');
-      let i=0;
-      function next(){
-        if(i>=lines.length){
-          downloadBtn.disabled = false;
-          return;
+        try {
+          const response = await fetch(fileUrl);
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        } catch (err) {
+          alert("❌ Failed to download file: " + err.message);
         }
-        const span = document.createElement('div');
-        span.className='code-line';
-        span.textContent = lines[i++];
-        codeBox.appendChild(span);
-        requestAnimationFrame(()=>span.style.opacity='1');
-        codeBox.scrollTop = codeBox.scrollHeight;
-        setTimeout(next, 5); // faster line-by-line loading
-      }
-      next();
-    }
+      });
+    });
 
-    function generate(){
-      const raw = urlInput.value.trim();
-      if(!raw) return;
-      const url = normalizeUrl(raw);
-      const html = buildHtml(url);
-      animateCode(html);
-      previewFrame.srcdoc = html;
-      const blob = new Blob([html],{type:'text/html'});
-      const dlUrl = URL.createObjectURL(blob);
-      downloadBtn.onclick = ()=>{const a=document.createElement('a');a.href=dlUrl;a.download='generated.html';a.click();};
-    }
+    // Search filter
+    const searchInput = document.getElementById("search");
+    const fileCards = document.querySelectorAll(".file-card");
+    const noResults = document.getElementById("noResults");
 
-    generateBtn.addEventListener('click',generate);
-    urlInput.addEventListener('keydown',e=>{if(e.key==='Enter')generate();});
-    backHome.addEventListener('click',()=>{window.location.href = '/';});
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      let visibleCount = 0;
+
+      fileCards.forEach(card => {
+        const name = card.querySelector(".file-name").textContent.toLowerCase();
+        if (name.includes(query)) {
+          card.style.display = "flex";
+          visibleCount++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      noResults.style.display = visibleCount === 0 ? "block" : "none";
+    });
   </script>
 </body>
 </html>
